@@ -61,6 +61,20 @@ trunk:
         title: "和团队一起做东西"
         note: "第一次以实习生的身份，和别人共同承担一个目标。"
 
+  - id: "xcpc-2026"
+    date: "2026.06"
+    title: "XCPC 武汉、南昌邀请赛"
+    summary: "为期十五天，连着打两场比赛，把平时训练的东西拿到现场去用。"
+    branches:
+      - thread: acm
+        date: "2026.06"
+        title: "XCPC 武汉站"
+        note: "第一次在真正的赛场节奏下比赛，和平时刷题完全是两种压力。"
+      - thread: acm
+        date: "2026.06"
+        title: "南昌邀请赛"
+        note: "连续作战的第二场，考验的是调整和恢复的能力。"
+
   - id: "quick-ssh"
     date: "2026.06"
     title: "Quick-SSH 首次发布"
