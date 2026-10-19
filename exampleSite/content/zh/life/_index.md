@@ -30,18 +30,36 @@ threads:
 #   url     可选，填写后节点可点击进入文章
 trunk:
   - id: "year-one"
-    date: "大一"
+    date: "2024.09"
     title: "入学"
     summary: "换了一个环境，开始把时间投向真正感兴趣的方向。"
     branches:
       - thread: acm
-        date: "大一上"
+        date: "2024 秋"
         title: "第一次接触算法竞赛"
         note: "从基础语法和数组题开始，逐渐把刷题变成固定习惯。"
       - thread: people
-        date: "大一"
+        date: "2024 秋"
         title: "认识第一批一起写代码的人"
         note: ""
+
+  - id: "teamhelper"
+    date: "2026.02"
+    title: "TeamHelper 实习"
+    summary: "大二寒假进入真实的产品环境，开始做大模型在 AR 眼镜方向的应用。"
+    branches:
+      - thread: ai
+        date: "2026.02"
+        title: "大模型在 AR 眼镜方向的应用"
+        note: "从实验室里的模型，转到有硬件约束、有真实用户的场景里去看它到底能做什么。"
+      - thread: eng
+        date: "2026.02"
+        title: "第一次参与完整的产品开发流程"
+        note: "需求、实现、联调、迭代，和一个人写代码是两回事。"
+      - thread: people
+        date: "2026.02"
+        title: "和团队一起做东西"
+        note: "第一次以实习生的身份，和别人共同承担一个目标。"
 
   - id: "quick-ssh"
     date: "2026.06"
@@ -60,6 +78,16 @@ trunk:
         date: "2026.07"
         title: "有人提了第一个 issue"
         note: "第一次意识到自己写的东西会被陌生人使用。"
+
+  - id: "astana"
+    date: "2026.09"
+    title: "阿斯塔纳 IT 大学交换"
+    summary: "作为交换生去到另一个国家，换一套完全不同的环境继续学习。"
+    branches:
+      - thread: people
+        date: "2026.09"
+        title: "换一个国家生活与学习"
+        note: "从熟悉的环境里抽离出来，重新适应语言、节奏和做事方式。"
 
   - id: "cyberblog"
     date: "2026.10"
