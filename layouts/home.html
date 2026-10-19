@@ -1,28 +1,32 @@
 {{ define "main" }}
 
 <section class="home-hero" aria-labelledby="home-title">
-	<h1 id="home-title" class="home-hero__title">
-		{{ site.Title }}<span class="cursor" aria-hidden="true">_</span>
-	</h1>
+	<div class="home-hero__text">
+		<h1 id="home-title" class="home-hero__title">
+			{{ site.Title }}<span class="cursor" aria-hidden="true">_</span>
+		</h1>
 
-	<h2 class="home-hero__name">{{ site.Params.author }}</h2>
+		<h2 class="home-hero__name">{{ site.Params.author }}</h2>
 
-	<p class="home-hero__description">
-		{{ with site.Params.descriptionLines }}
-			{{ range . }}
-				<span>{{ . }}</span>
+		<p class="home-hero__description">
+			{{ with site.Params.descriptionLines }}
+				{{ range . }}
+					<span>{{ . }}</span>
+				{{ end }}
+			{{ else }} 
+				{{ site.Params.description }}
 			{{ end }}
-		{{ else }} 
-			{{ site.Params.description }}
-		{{ end }}
-	</p>
+		</p>
 
-	<p class="home-hero__tagline">
-		<span class="home-hero__pipe" aria-hidden="true">|</span>
-		<span class="home-hero__tagline-text">
-			{{ site.Params.tagline | markdownify }}
-		</span>
-	</p>
+		<p class="home-hero__tagline">
+			<span class="home-hero__pipe" aria-hidden="true">|</span>
+			<span class="home-hero__tagline-text">
+				{{ site.Params.tagline | markdownify }}
+			</span>
+		</p>
+	</div>
+
+	{{ partial "crt-avatar.html" . }}
 </section>
 
 {{ with site.Params.social }}

@@ -1,0 +1,101 @@
+{{- $img := resources.Get "images/avatar-purple.jpg" -}}
+{{- $src := "" -}}
+{{- $width := 720 -}}
+{{- $height := 720 -}}
+{{- with $img -}}
+	{{- $resized := .Resize "720x720 webp q88" -}}
+	{{- $src = $resized.RelPermalink -}}
+	{{- $width = $resized.Width -}}
+	{{- $height = $resized.Height -}}
+{{- end -}}
+
+{{- with $src -}}
+<div class="crt-avatar-field" data-crt-field>
+	<figure class="crt-avatar is-idle" data-crt-avatar style="--crt-avatar-src: url('{{ . }}');">
+		<svg class="crt-avatar__filters" aria-hidden="true" focusable="false">
+			<filter id="crt-avatar-filter" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+				<feTurbulence
+					id="crt-avatar-noise"
+					type="fractalNoise"
+					baseFrequency="0.008 0.55"
+					numOctaves="2"
+					seed="7"
+					result="noise"
+				/>
+
+				<feDisplacementMap
+					id="crt-avatar-displace"
+					in="SourceGraphic"
+					in2="noise"
+					scale="0"
+					xChannelSelector="R"
+					yChannelSelector="G"
+					result="warped"
+				/>
+
+				<feOffset id="crt-avatar-ch-r" in="warped" dx="0" dy="0" result="rShift" />
+				<feColorMatrix
+					in="rShift"
+					type="matrix"
+					values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0"
+					result="chR"
+				/>
+
+				<feOffset id="crt-avatar-ch-g" in="warped" dx="0" dy="0" result="gShift" />
+				<feColorMatrix
+					in="gShift"
+					type="matrix"
+					values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0"
+					result="chG"
+				/>
+
+				<feOffset id="crt-avatar-ch-b" in="warped" dx="0" dy="0" result="bShift" />
+				<feColorMatrix
+					in="bShift"
+					type="matrix"
+					values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0"
+					result="chB"
+				/>
+
+				<feBlend in="chR" in2="chG" mode="screen" result="rg" />
+				<feBlend in="rg" in2="chB" mode="screen" />
+			</filter>
+		</svg>
+
+		<div class="crt-avatar__screen">
+			<img
+				class="crt-avatar__image"
+				src="{{ $src }}"
+				alt="{{ site.Params.author | default site.Title }}"
+				width="{{ $width }}"
+				height="{{ $height }}"
+				decoding="async"
+				fetchpriority="high"
+			>
+
+			<span class="crt-avatar__tear crt-avatar__tear--a" aria-hidden="true"></span>
+			<span class="crt-avatar__tear crt-avatar__tear--b" aria-hidden="true"></span>
+			<span class="crt-avatar__scanlines" aria-hidden="true"></span>
+			<span class="crt-avatar__vignette" aria-hidden="true"></span>
+		</div>
+
+		<span class="crt-avatar__ring" aria-hidden="true"></span>
+	</figure>
+</div>
+
+{{ with resources.Get "js/crt-avatar.js" }}
+	{{- $opts := dict
+		"minify" (cond hugo.IsDevelopment false true)
+		"sourceMap" (cond hugo.IsDevelopment "linked" "none")
+	}}
+	{{- with . | js.Build $opts }}
+		{{- if hugo.IsDevelopment }}
+			<script defer src="{{ .RelPermalink }}"></script>
+		{{- else }}
+			{{- with . | fingerprint }}
+				<script defer src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
+			{{- end }}
+		{{- end }}
+	{{- end }}
+{{- end }}
+{{- end }}

@@ -1,11 +1,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+{{- $tabTitle := site.Params.tabTitle | default site.Title -}}
 <title>
 	{{- if .IsHome -}}
-		{{ site.Title }}
+		{{ $tabTitle }}
 	{{- else -}}
-		{{ .Title }} · {{ site.Title }}
+		{{ .Title }} · {{ $tabTitle }}
 	{{- end -}}
 </title>
 

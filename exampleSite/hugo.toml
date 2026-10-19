@@ -14,6 +14,7 @@ defaultContentLanguageInSubdir = false
   pagerSize = 10
 
 [params]
+  tabTitle = "Welcome to my blog!!!"
   blogPageSize = 5
   latestSections = ["algorithm", "marktext"]
 
@@ -63,6 +64,11 @@ defaultContentLanguageInSubdir = false
   name = "marktext"
   pageRef = "/marktext"
   weight = 30
+
+[[languages.zh.menus.main]]
+  name = "projects"
+  pageRef = "/projects"
+  weight = 35
 
 [[languages.zh.menus.main]]
   name = "about"

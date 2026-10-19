@@ -11,6 +11,8 @@ category = "categories"
 
 [params]
 blogPageSize = 5
+# 浏览器标签页标题；留空时回退到 site.Title
+# tabTitle = "Welcome to my blog!!!"
 
 [params.toc]
 enabled = true
