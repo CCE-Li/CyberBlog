@@ -102,8 +102,14 @@
 											</span>
 
 											<span class="life-branch__title">
-												{{ if $branch.url }}
-													<a href="{{ $branch.url }}">{{ $branch.title }}</a>
+												{{- $href := $branch.url -}}
+												{{- with $branch.page -}}
+													{{- with site.GetPage . -}}
+														{{- $href = .RelPermalink -}}
+													{{- end -}}
+												{{- end -}}
+												{{ if $href }}
+													<a href="{{ $href }}">{{ $branch.title }}</a>
 												{{ else }}
 													{{ $branch.title }}
 												{{ end }}

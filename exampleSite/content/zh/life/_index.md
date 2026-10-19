@@ -27,7 +27,8 @@ threads:
 # branches 里挂的是这条主干的枝干节点。
 #   thread  枝干所属脉络，取值见上方 threads 的 key
 #   date    短标签，自由文本，如 "大一上" / "2026.06"
-#   url     可选，填写后节点可点击进入文章
+#   page    可选，站内文章路径，填写后节点可点击进入
+#   url     可选，外部链接
 trunk:
   - id: "year-one"
     date: "2024.09"
@@ -49,6 +50,16 @@ trunk:
     summary: "大二寒假进入真实的产品环境，开始做大模型在 AR 眼镜方向的应用。"
     branches:
       - thread: ai
+        date: "2026.01"
+        title: "前置学习：把 Agent 的实现结构理清楚"
+        note: "权限、工具与执行循环怎么组织，才算一个能用的 Agent。"
+        page: "/marktext/agent-architecture"
+      - thread: ai
+        date: "2026.01"
+        title: "前置学习：AI 幻觉的成因与缓解"
+        note: "理解模型为什么会一本正经地编，才知道在硬件场景里该怎么兜底。"
+        page: "/marktext/ai-hallucination"
+      - thread: ai
         date: "2026.02"
         title: "大模型在 AR 眼镜方向的应用"
         note: "从实验室里的模型，转到有硬件约束、有真实用户的场景里去看它到底能做什么。"
@@ -66,6 +77,26 @@ trunk:
     title: "XCPC 武汉、南昌邀请赛"
     summary: "为期十五天，连着打两场比赛，把平时训练的东西拿到现场去用。"
     branches:
+      - thread: acm
+        date: "2026.05"
+        title: "赛前补强：单调队列"
+        note: "滑动窗口最值，赛前反复默写。"
+        page: "/algorithm/monotonic-queue"
+      - thread: acm
+        date: "2026.05"
+        title: "赛前补强：01 背包与序列 DP"
+        note: "从二维方程推到滚动数组，再整理几个常用的序列模型。"
+        page: "/algorithm/knapsack-01"
+      - thread: acm
+        date: "2026.06"
+        title: "赛前补强：二维前缀和"
+        note: "二维区间统计，属于必须零失误的基础题。"
+        page: "/algorithm/prefix-sum-2d"
+      - thread: acm
+        date: "2026.06"
+        title: "赛前补强：KMP"
+        note: "next 数组与线性匹配，字符串题的底线。"
+        page: "/algorithm/kmp"
       - thread: acm
         date: "2026.06"
         title: "XCPC 武汉站"
@@ -92,6 +123,11 @@ trunk:
         date: "2026.07"
         title: "有人提了第一个 issue"
         note: "第一次意识到自己写的东西会被陌生人使用。"
+      - thread: oss
+        date: "2026.07"
+        title: "发布踩坑：Scoop Bucket 自动发布"
+        note: "Manifest 字段、404、Hash 不匹配，打包发布比写功能更琐碎。"
+        page: "/marktext/scoop-bucket"
 
   - id: "astana"
     date: "2026.09"
@@ -116,4 +152,9 @@ trunk:
         date: "2026.10"
         title: "开始让 AI 参与日常开发流程"
         note: "从补全走向协作，重点转向怎么描述问题。"
+      - thread: eng
+        date: "2026.10"
+        title: "构建流程交给 Git：三个区域与常用指令"
+        note: "把改动、暂存与提交的关系理清楚，避免误操作。"
+        page: "/marktext/git-commands"
 ---
