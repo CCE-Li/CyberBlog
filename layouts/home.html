@@ -75,7 +75,15 @@
 				<span class="home-module__name">/{{ .Title | lower }}</span>
 				<span class="home-module__description">{{ .Description }}</span>
 				<span class="home-module__meta">
-					{{ len .RegularPages }} {{ i18n "module_articles" }}
+					{{ with .Params.trunk }}
+						{{ $branchCount := 0 }}
+						{{ range . }}
+							{{ $branchCount = add $branchCount (len (.branches | default slice)) }}
+						{{ end }}
+						{{ len . }} {{ i18n "life_trunk_nodes" }} · {{ $branchCount }} {{ i18n "life_branch_count" }}
+					{{ else }}
+						{{ len .RegularPages }} {{ i18n "module_articles" }}
+					{{ end }}
 				</span>
 			</a>
 		{{ end }}

@@ -99,3 +99,24 @@ other = "篇文章"
 
 [module_latest]
 other = "最近更新"
+
+[life_threads]
+other = "脉络"
+
+[life_trunk_nodes]
+other = "个主干节点"
+
+[life_branch_count]
+other = "条枝干"
+
+[life_thread_count]
+other = "条脉络"
+
+[life_archive]
+other = "相关文章"
+
+[life_read]
+other = "阅读"
+
+[life_empty]
+other = "时间线还没有内容。"

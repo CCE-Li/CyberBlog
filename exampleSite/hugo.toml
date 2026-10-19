@@ -66,6 +66,11 @@ defaultContentLanguageInSubdir = false
   weight = 30
 
 [[languages.zh.menus.main]]
+  name = "life"
+  pageRef = "/life"
+  weight = 32
+
+[[languages.zh.menus.main]]
   name = "projects"
   pageRef = "/projects"
   weight = 35

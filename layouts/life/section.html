@@ -1,0 +1,168 @@
+{{ define "main" }}
+
+{{- $threads := .Params.threads | default slice -}}
+{{- $trunk := .Params.trunk | default slice -}}
+{{- $pages := .RegularPages.ByTitle -}}
+
+{{- $threadCount := len $threads -}}
+{{- $nodeCount := 0 -}}
+{{- range $trunk -}}
+	{{- $nodeCount = add $nodeCount (len (.branches | default slice)) -}}
+{{- end -}}
+
+<section class="life-page" aria-labelledby="life-title" data-life>
+	<header class="module-header">
+		<h1 id="life-title" class="module-title">
+			/{{ with .Params.displayTitle }}{{ . }}{{ else }}{{ .Title | lower }}{{ end }}<span class="cursor" aria-hidden="true">_</span>
+		</h1>
+
+		{{ with .Description }}
+			<p class="module-description">{{ . }}</p>
+		{{ end }}
+
+		<p class="module-stats">
+			<span>{{ len $trunk }} {{ i18n "life_trunk_nodes" }}</span>
+			<span aria-hidden="true">//</span>
+			<span>{{ $nodeCount }} {{ i18n "life_branch_count" }}</span>
+			{{ if $threadCount }}
+				<span aria-hidden="true">//</span>
+				<span>{{ $threadCount }} {{ i18n "life_thread_count" }}</span>
+			{{ end }}
+		</p>
+	</header>
+
+	{{ with .Content }}
+		<div class="module-intro page__content">
+			{{ . }}
+		</div>
+	{{ end }}
+
+	{{ if $threads }}
+		<div class="life-legend" aria-label="脉络图例">
+			<span class="life-legend__label">{{ i18n "life_threads" }}</span>
+			{{ range $threads }}
+				<span class="life-legend__item" style="--thread: var(--{{ .color | default "purple" }});">
+					<span class="life-legend__dot" aria-hidden="true"></span>{{ .name }}
+				</span>
+			{{ end }}
+		</div>
+	{{ end }}
+
+	{{ if $trunk }}
+		<div class="life-tree" data-life-tree>
+			<svg class="life-tree__edges" aria-hidden="true" focusable="false" data-life-svg>
+				<g data-life-edges></g>
+			</svg>
+
+			<ol class="life-trunk">
+				{{ range $index, $node := $trunk }}
+					{{- $branches := $node.branches | default slice -}}
+
+					<li class="life-node" id="{{ $node.id | default (printf "node-%d" $index) }}">
+						<span class="life-node__marker" aria-hidden="true"></span>
+
+						<div class="life-node__head">
+							<time class="life-node__date">{{ $node.date }}</time>
+							<h2 class="life-node__title">{{ $node.title }}</h2>
+						</div>
+
+						{{ with $node.summary }}
+							<p class="life-node__summary">{{ . }}</p>
+						{{ end }}
+
+						{{ with $node.url }}
+							<a class="life-node__link" href="{{ . }}">{{ i18n "life_read" }}<span aria-hidden="true">→</span></a>
+						{{ end }}
+
+						{{ if $branches }}
+							<ul class="life-branches">
+								{{ range $i, $branch := $branches }}
+									{{- $thread := index (where $threads "key" $branch.thread) 0 -}}
+									{{- $color := "purple" -}}
+									{{- $threadName := $branch.thread -}}
+									{{- with $thread -}}
+										{{- $color = .color | default "purple" -}}
+										{{- $threadName = .name -}}
+									{{- end -}}
+
+									<li
+										class="life-branch"
+										data-life-branch
+										data-thread="{{ $branch.thread }}"
+										style="--thread: var(--{{ $color }}); --depth: {{ $i }};"
+									>
+										<span class="life-branch__dot" aria-hidden="true"></span>
+
+										<div class="life-branch__body">
+											<span class="life-branch__meta">
+												<span class="life-branch__thread">{{ $threadName }}</span>
+												{{ with $branch.date }}
+													<span class="life-branch__date">{{ . }}</span>
+												{{ end }}
+											</span>
+
+											<span class="life-branch__title">
+												{{ if $branch.url }}
+													<a href="{{ $branch.url }}">{{ $branch.title }}</a>
+												{{ else }}
+													{{ $branch.title }}
+												{{ end }}
+											</span>
+
+											{{ with $branch.note }}
+												<span class="life-branch__note">{{ . }}</span>
+											{{ end }}
+										</div>
+									</li>
+								{{ end }}
+							</ul>
+						{{ end }}
+					</li>
+				{{ end }}
+			</ol>
+		</div>
+	{{ else }}
+		<p class="empty-state">{{ i18n "life_empty" }}</p>
+	{{ end }}
+
+	{{ with $pages }}
+		<section class="life-archive" aria-labelledby="life-archive-title">
+			<h2 id="life-archive-title" class="module-group__title">
+				<span class="module-group__hash" aria-hidden="true">#</span>{{ i18n "life_archive" }}
+				<span class="module-group__count">{{ len . }}</span>
+			</h2>
+
+			<div class="module-list">
+				{{ range . }}
+					<article class="module-card">
+						<a class="module-card__link" href="{{ .RelPermalink }}">
+							<span class="module-card__main">
+								<span class="module-card__title">{{ .Title }}</span>
+								<span class="module-card__description">
+									{{ with .Description }}{{ . }}{{ else }}{{ .Summary | plainify | truncate 140 }}{{ end }}
+								</span>
+							</span>
+							<span class="module-card__reading">{{ .Date.Format "2006-01-02" }}</span>
+							<span class="module-card__arrow" aria-hidden="true">→</span>
+						</a>
+					</article>
+				{{ end }}
+			</div>
+		</section>
+	{{ end }}
+</section>
+
+{{ with resources.Get "js/life-tree.js" }}
+	{{- $opts := dict "minify" (cond hugo.IsDevelopment false true) }}
+	{{- with . | js.Build $opts }}
+		{{- if hugo.IsDevelopment }}
+			<script defer src="{{ .RelPermalink }}"></script>
+		{{- else }}
+			{{- with . | fingerprint }}
+				<script defer src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
+			{{- end }}
+		{{- end }}
+	{{- end }}
+{{- end }}
+
+{{ end }}
