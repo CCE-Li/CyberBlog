@@ -1,26 +1,31 @@
 {{ define "main" }}
 
 {{ $isPost := eq .Section "posts" }}
+{{ $isModule := in (slice "algorithm" "marktext") .Section }}
 {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
 {{ $dateHuman := .Date | time.Format "2006-01-02" }}
-{{ $postsPage := site.GetPage "/posts" }}
+{{ $sectionPage := .Parent }}
 
 {{ $next := .NextInSection }}
 {{ if not $next }}
 	{{ $next = .PrevInSection }}
 {{ end }}
 
-<article class="page {{ if $isPost }}page--post{{ end }}">
-	{{ if and $isPost $postsPage }}
-		<a class="page__back" href="{{ $postsPage.RelPermalink }}">
+<article class="page {{ if $isPost }}page--post{{ end }} {{ if $isModule }}page--module{{ end }}">
+	{{ if and $isPost $sectionPage }}
+		<a class="page__back" href="{{ $sectionPage.RelPermalink }}">
 			← {{ i18n "back_to_blog" }}
+		</a>
+	{{ else if and $isModule $sectionPage }}
+		<a class="page__back" href="{{ $sectionPage.RelPermalink }}">
+			← {{ i18n "back_to_module" }}
 		</a>
 	{{ end }}
 
 	<header class="page__header">
 		<h1 class="page__title">{{ .Title }}</h1>
 
-		{{ if $isPost }}
+		{{ if or $isPost $isModule }}
 			<div class="page__meta">
 				{{ with site.Params.author }}
 					<span>{{ . }}</span>
@@ -34,6 +39,11 @@
 
 				<span aria-hidden="true">//</span>
 				<span>{{ .ReadingTime }} {{ i18n "minutes" }}</span>
+
+				{{ with .Params.group }}
+					<span aria-hidden="true">//</span>
+					<span>{{ . }}</span>
+				{{ end }}
 			</div>
 		{{ end }}
 
@@ -85,7 +95,7 @@
 
 	{{ $tocHTML := .Fragments.ToHTML $tocStartLevel $tocEndLevel $tocOrdered }}
 
-	{{ if and $isPost $tocEnabled (in (printf "%s" $tocHTML) "<li") }}
+	{{ if and (or $isPost $isModule) $tocEnabled (in (printf "%s" $tocHTML) "<li") }}
 		<aside class="page-toc" aria-labelledby="page-toc-title">
 			<h2 id="page-toc-title" class="page-toc__title">
 				{{ i18n "contents" }}

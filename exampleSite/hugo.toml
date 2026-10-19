@@ -1,9 +1,9 @@
-baseURL = "https://riglegit.github.io/rewired/"
-title = "Rewired"
+baseURL = "https://cce-li.github.io/CyberBlog/"
+title = "CyberBlog"
 theme = "rewired"
 themesDir = "../.."
 
-defaultContentLanguage = "es"
+defaultContentLanguage = "zh"
 defaultContentLanguageInSubdir = false
 
 [taxonomies]
@@ -15,11 +15,12 @@ defaultContentLanguageInSubdir = false
 
 [params]
   blogPageSize = 5
+  latestSections = ["algorithm", "marktext"]
 
 [params.toc]
   enabled = true
   ordered = false
-  startLevel = 1
+  startLevel = 2
   endLevel = 3
 
 [caches]
@@ -28,10 +29,60 @@ defaultContentLanguageInSubdir = false
 
 [languages]
 
+[languages.zh]
+  label = "简体中文"
+  locale = "zh-CN"
+  weight = 1
+  contentDir = "content/zh"
+  title = "CyberBlog"
+  hasCJKLanguage = true
+
+[languages.zh.params]
+  author = "CCE-Li"
+  descriptionLines = [
+    "算法竞赛笔记与工程实践记录的归档。",
+    "Algorithm 与 MarkText 两个模块，持续整理中。",
+  ]
+  tagline = "在 [Algorithm](/algorithm/) 里整理算法，在 [MarkText](/marktext/) 里沉淀工程笔记。"
+
+[languages.zh.params.footer]
+  text = 'cyberblog // 使用 [Hugo](https://gohugo.io/) 与 [rewired](https://github.com/RigleGit/rewired) 构建'
+  prompt = "cce-li@cyberblog:~$"
+
+[[languages.zh.menus.main]]
+  name = "home"
+  pageRef = "/"
+  weight = 10
+
+[[languages.zh.menus.main]]
+  name = "algorithm"
+  pageRef = "/algorithm"
+  weight = 20
+
+[[languages.zh.menus.main]]
+  name = "marktext"
+  pageRef = "/marktext"
+  weight = 30
+
+[[languages.zh.menus.main]]
+  name = "about"
+  pageRef = "/about"
+  weight = 40
+
+[[languages.zh.params.social]]
+  name = "GitHub"
+  url = "https://github.com/CCE-Li"
+  icon = "fa-brands fa-github"
+
+[[languages.zh.params.subnodes]]
+  name = "github.com/CCE-Li/CyberBlog"
+  url = "https://github.com/CCE-Li/CyberBlog"
+  description = "本站源码"
+
 [languages.es]
   label = "Español"
   locale = "es-ES"
-  weight = 1
+  weight = 2
   contentDir = "content/es"
   title = "Rewired"
 
@@ -41,7 +92,7 @@ defaultContentLanguageInSubdir = false
     "Un tema oscuro, mínimo y con estética terminal.",
     "Pensado para blogs personales, proyectos y portfolios técnicos.",
   ]
-  tagline = "Escribo en el [blog](/posts/), comparto [proyectos](/projects/) y mantengo una web personal sencilla."
+  tagline = "Escribo en el [blog](/es/posts/), comparto [proyectos](/es/projects/) y mantengo una web personal sencilla."
 
 [languages.es.params.footer]
   text = 'rewired // hecho con ♥ y [Hugo](https://gohugo.io/)'
@@ -90,7 +141,7 @@ defaultContentLanguageInSubdir = false
 [languages.en]
   label = "English"
   locale = "en-US"
-  weight = 2
+  weight = 3
   contentDir = "content/en"
   title = "Rewired"
 
@@ -147,7 +198,15 @@ defaultContentLanguageInSubdir = false
   description = "Code and projects"
 
 [markup]
+  [markup.highlight]
+    style = "dracula"
+    lineNos = false
+    codeFences = true
   [markup.goldmark]
+    [markup.goldmark.parser]
+      wrapStandAloneImageWithinParagraph = false
+    [markup.goldmark.renderer]
+      unsafe = true
     [markup.goldmark.extensions]
       [markup.goldmark.extensions.passthrough]
         enable = true

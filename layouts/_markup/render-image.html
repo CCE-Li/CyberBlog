@@ -1,18 +1,29 @@
+{{- $dest := .Destination -}}
+{{- $src := $dest -}}
+{{- $alt := .Text -}}
+{{- $title := .Title -}}
+
+{{- with .Page -}}
+	{{- with .Resources.GetMatch $dest -}}
+		{{- $src = .RelPermalink -}}
+	{{- end -}}
+{{- end -}}
+
+{{- if .IsBlock -}}
 <figure class="content-figure">
 	<img
-		src="{{ .Destination | safeURL }}"
-		alt="{{ .Text }}"
-		{{ with .Title }}title="{{ . }}"{{ end }}
+		src="{{ $src | safeURL }}"
+		alt="{{ $alt }}"
+		{{ with $title }}title="{{ . }}"{{ end }}
 		loading="lazy"
 	>
 
-	{{ if or .Title .Text }}
+	{{ if or $title $alt }}
 		<figcaption>
-			{{ with .Title }}
-				{{ . }}
-			{{ else }}
-				{{ .Text }}
-			{{ end }}
+			{{ with $title }}{{ . }}{{ else }}{{ $alt }}{{ end }}
 		</figcaption>
 	{{ end }}
 </figure>
+{{- else -}}
+<img src="{{ $src | safeURL }}" alt="{{ $alt }}"{{ with $title }} title="{{ . }}"{{ end }}>
+{{- end -}}

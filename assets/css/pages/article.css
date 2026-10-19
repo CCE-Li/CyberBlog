@@ -191,7 +191,9 @@
 .content-figure img,
 .page__content img {
   display: block;
-  width: 100%;
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
   border: 1px solid var(--line);
   background: rgba(17, 18, 26, 0.8);
 }

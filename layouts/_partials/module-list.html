@@ -1,0 +1,98 @@
+{{- $pages := .RegularPages.ByWeight -}}
+{{- $groups := .Params.groups | default slice -}}
+{{- $total := len $pages -}}
+{{- $minutes := 0 -}}
+{{- range $pages -}}
+	{{- $minutes = add $minutes .ReadingTime -}}
+{{- end -}}
+
+<section class="module-page" aria-labelledby="module-title">
+	<header class="module-header">
+		<h1 id="module-title" class="module-title">
+			/{{ .Title | lower }}<span class="cursor" aria-hidden="true">_</span>
+		</h1>
+
+		{{ with .Description }}
+			<p class="module-description">{{ . }}</p>
+		{{ end }}
+
+		<p class="module-stats">
+			<span>{{ $total }} {{ i18n "module_articles" }}</span>
+			<span aria-hidden="true">//</span>
+			<span>{{ $minutes }} {{ i18n "minutes" }}</span>
+		</p>
+	</header>
+
+	{{ with .Content }}
+		<div class="module-intro page__content">
+			{{ . }}
+		</div>
+	{{ end }}
+
+	{{ range $groups }}
+		{{ $name := . }}
+		{{ $items := where $pages "Params.group" $name }}
+
+		{{ if $items }}
+			<section class="module-group" aria-labelledby="group-{{ $name | urlize }}">
+				<h2 id="group-{{ $name | urlize }}" class="module-group__title">
+					<span class="module-group__hash" aria-hidden="true">#</span>{{ $name }}
+					<span class="module-group__count">{{ len $items }}</span>
+				</h2>
+
+				<div class="module-list">
+					{{ range $items }}
+						<article class="module-card">
+							<a class="module-card__link" href="{{ .RelPermalink }}">
+								<span class="module-card__main">
+									<span class="module-card__title">{{ .Title }}</span>
+
+									<span class="module-card__description">
+										{{ with .Description }}
+											{{ . }}
+										{{ else }}
+											{{ .Summary | plainify | truncate 140 }}
+										{{ end }}
+									</span>
+
+									{{ with .Params.tags }}
+										<span class="module-card__tags">
+											{{ range first 4 . }}
+												<span class="module-card__tag">{{ . }}</span>
+											{{ end }}
+										</span>
+									{{ end }}
+								</span>
+
+								<span class="module-card__reading">
+									{{ .ReadingTime }} {{ i18n "minutes" }}
+								</span>
+
+								<span class="module-card__arrow" aria-hidden="true">→</span>
+							</a>
+						</article>
+					{{ end }}
+				</div>
+			</section>
+		{{ end }}
+	{{ end }}
+
+	{{ if eq (len $groups) 0 }}
+		<div class="module-list">
+			{{ range $pages }}
+				<article class="module-card">
+					<a class="module-card__link" href="{{ .RelPermalink }}">
+						<span class="module-card__main">
+							<span class="module-card__title">{{ .Title }}</span>
+							<span class="module-card__description">
+								{{ with .Description }}{{ . }}{{ else }}{{ .Summary | plainify | truncate 140 }}{{ end }}
+							</span>
+						</span>
+						<span class="module-card__reading">{{ .ReadingTime }} {{ i18n "minutes" }}</span>
+						<span class="module-card__arrow" aria-hidden="true">→</span>
+					</a>
+				</article>
+			{{ end }}
+		</div>
+	{{ end }}
+</section>

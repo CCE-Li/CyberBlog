@@ -22,6 +22,9 @@ other = "categorías"
 [back_to_blog]
 other = "volver al blog"
 
+[back_to_module]
+other = "volver al índice"
+
 [words]
 other = "palabras"
 
@@ -87,3 +90,12 @@ other = "Saltar al contenido"
 
 [no_terms]
 other = "Todavía no hay términos."
+
+[modules]
+other = "módulos"
+
+[module_articles]
+other = "artículos"
+
+[module_latest]
+other = "actualizado recientemente"

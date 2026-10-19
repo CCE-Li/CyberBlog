@@ -59,19 +59,43 @@
 	</section>
 {{ end }}
 
+{{ $moduleSections := where site.Sections "Params.isModule" true }}
+
+{{ if $moduleSections }}
+<section class="home-section home-modules-section" aria-labelledby="modules-title">
+	<h2 id="modules-title" class="section-title">{{ i18n "modules" }}</h2>
+
+	<div class="home-modules">
+		{{ range $moduleSections }}
+			<a class="home-module" href="{{ .RelPermalink }}">
+				<span class="home-module__name">/{{ .Title | lower }}</span>
+				<span class="home-module__description">{{ .Description }}</span>
+				<span class="home-module__meta">
+					{{ len .RegularPages }} {{ i18n "module_articles" }}
+				</span>
+			</a>
+		{{ end }}
+	</div>
+</section>
+{{ end }}
+
 <section class="home-section home-posts" aria-labelledby="latest-posts-title">
 	<h2 id="latest-posts-title" class="section-title section-title--pink">
-		{{ i18n "latest_posts" }}
+		{{ i18n "module_latest" }}
 	</h2>
 
-	{{ $posts := first 4 (where site.RegularPages "Section" "posts") }}
+	{{ $notes := where site.RegularPages "Params.isNote" true }}
+	{{ if eq (len $notes) 0 }}
+		{{ $notes = where site.RegularPages "Section" "posts" }}
+	{{ end }}
+	{{ $posts := first 6 $notes.ByLastmod.Reverse }}
 
 	{{ if $posts }}
 		<div class="post-list">
 			{{ range $posts }}
 				<a class="post-row" href="{{ .RelPermalink }}">
-					<time class="post-row__date" datetime="{{ .Date.Format "2006-01-02" }}">
-						{{ .Date.Format "2006-01-02" }}
+					<time class="post-row__date" datetime="{{ .Lastmod.Format "2006-01-02" }}">
+						{{ .Lastmod.Format "2006-01-02" }}
 					</time>
 					<span class="post-row__separator" aria-hidden="true">|</span>
 					<span class="post-row__title">{{ .Title }}</span>
